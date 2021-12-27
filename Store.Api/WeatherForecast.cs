@@ -1,5 +1,5 @@
-namespace Store.Api;
 
+namespace Store.Api;
 public class WeatherForecast
 {
     public DateTime Date { get; set; }
