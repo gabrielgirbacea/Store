@@ -14,7 +14,7 @@ namespace Store.Api.Controllers
 
         public ProductBrandsController(IProductBrandRepository repository)
         {
-            _repository = repository;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
 

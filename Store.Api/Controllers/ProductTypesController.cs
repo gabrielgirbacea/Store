@@ -15,7 +15,7 @@ namespace Store.Api.Controllers
 
         public ProductTypesController(IProductTypeRepository repository)
         {
-            _repository = repository;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         [HttpGet("")]
