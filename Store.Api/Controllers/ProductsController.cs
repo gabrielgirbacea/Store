@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Store.Api.Dtos;
+using Store.Api.Errors;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 using Store.Core.Specifications;
@@ -10,9 +12,7 @@ using System.Threading.Tasks;
 
 namespace Store.Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    public class ProductsController : BaseApiController
     {
         private readonly IBaseEntityRepository<Product> _repository;
         private readonly IMapper _mapper;
@@ -24,6 +24,8 @@ namespace Store.Api.Controllers
         }
 
         [HttpGet("")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProductsAsync()
         {
             var products = await _repository.GetEntitiesAsync(new ProductsWithTypesAndBrandsSpecification());
@@ -32,11 +34,18 @@ namespace Store.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ProductToReturnDto> GetProductAsync(Guid id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ProductToReturnDto>> GetProductAsync(Guid id)
         {
             var product = await _repository.GetEntityWithSpec(new ProductsWithTypesAndBrandsSpecification(id));
 
-            return _mapper.Map<Product, ProductToReturnDto>(product);
+            if (product == null)
+            {
+                return NotFound(new ApiResponse(404));
+            }
+
+            return Ok(_mapper.Map<Product, ProductToReturnDto>(product));
         }
     }
 }

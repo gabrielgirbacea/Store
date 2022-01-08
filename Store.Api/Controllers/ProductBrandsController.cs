@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Store.Api.Errors;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 using System;
@@ -6,9 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace Store.Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductBrandsController : ControllerBase
+    public class ProductBrandsController : BaseApiController
     {
         private readonly IBaseEntityRepository<ProductBrand> _repository;
 
@@ -19,6 +19,8 @@ namespace Store.Api.Controllers
 
 
         [HttpGet("")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<ProductBrand>>> GetProductBrandsAsync()
         {
             var products = await _repository.GetEntitiesAsync();
@@ -27,9 +29,11 @@ namespace Store.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ProductBrand> GetProductAsync(Guid id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ProductBrand>> GetProductAsync(Guid id)
         {
-            return await _repository.GetEntityByIdAsync(id);
+            return Ok(await _repository.GetEntityByIdAsync(id));
         }
     }
 }
