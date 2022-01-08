@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Store.Api.Profiles;
 using Store.Core.Interfaces;
 using Store.Data.Data;
 using Store.Infrastructure.Data;
@@ -29,6 +30,8 @@ namespace Store.Api
                 c.UseSqlite(_config.GetConnectionString("DefaultConnection")));
 
             services.AddScoped(typeof(IBaseEntityRepository<>), (typeof(BaseEntityRepository<>)));
+        
+            services.AddAutoMapper(typeof(ProductProfile));
 
             services.AddSwaggerGen(c =>
             {
@@ -51,6 +54,8 @@ namespace Store.Api
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
