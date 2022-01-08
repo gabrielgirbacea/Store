@@ -28,7 +28,7 @@ namespace Store.Api
             services.AddDbContext<StoreContext>(c =>
                 c.UseSqlite(_config.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped(typeof(IBaseEntityRepository<>), (typeof(BaseEntityRepository<>)));
 
             services.AddSwaggerGen(c =>
             {

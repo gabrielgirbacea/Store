@@ -11,9 +11,9 @@ namespace Store.Api.Controllers
     [Route("api/[controller]")]
     public class ProductTypesController : ControllerBase
     {
-        private readonly IProductTypeRepository _repository;
+        private readonly IBaseEntityRepository<ProductType> _repository;
 
-        public ProductTypesController(IProductTypeRepository repository)
+        public ProductTypesController(IBaseEntityRepository<ProductType> repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
@@ -21,7 +21,7 @@ namespace Store.Api.Controllers
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<ProductType>>> GetProductTypesAsync()
         {
-            var products = await _repository.GetProductTypesAsync();
+            var products = await _repository.GetEntitiesAsync();
 
             return Ok(products);
         }
@@ -29,7 +29,7 @@ namespace Store.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ProductType> GetProductAsync(Guid id)
         {
-            return await _repository.GetProductTypeByIdAsync(id);
+            return await _repository.GetEntityByIdAsync(id);
         }
     }
 }

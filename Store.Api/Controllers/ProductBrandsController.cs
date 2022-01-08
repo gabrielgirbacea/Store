@@ -10,9 +10,9 @@ namespace Store.Api.Controllers
     [Route("api/[controller]")]
     public class ProductBrandsController : ControllerBase
     {
-        private readonly IProductBrandRepository _repository;
+        private readonly IBaseEntityRepository<ProductBrand> _repository;
 
-        public ProductBrandsController(IProductBrandRepository repository)
+        public ProductBrandsController(IBaseEntityRepository<ProductBrand> repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
@@ -21,7 +21,7 @@ namespace Store.Api.Controllers
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<ProductBrand>>> GetProductBrandsAsync()
         {
-            var products = await _repository.GetProductBrandsAsync();
+            var products = await _repository.GetEntitiesAsync();
 
             return Ok(products);
         }
@@ -29,7 +29,7 @@ namespace Store.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ProductBrand> GetProductAsync(Guid id)
         {
-            return await _repository.GetProductBrandByIdAsync(id);
+            return await _repository.GetEntityByIdAsync(id);
         }
     }
 }
