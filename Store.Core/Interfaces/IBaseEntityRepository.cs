@@ -15,5 +15,7 @@ namespace Store.Core.Interfaces
         Task<IReadOnlyList<T>> GetEntitiesAsync();
 
         Task<IReadOnlyList<T>> GetEntitiesAsync(ISpecification<T> spec);
+
+        Task<int> CountAsync(ISpecification<T> spec);
     }
 }

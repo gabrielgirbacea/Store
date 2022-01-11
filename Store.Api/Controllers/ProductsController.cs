@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Store.Api.Dtos;
 using Store.Api.Errors;
+using Store.Api.Helpers;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 using Store.Core.Specifications;
@@ -26,11 +27,17 @@ namespace Store.Api.Controllers
         [HttpGet("")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProductsAsync()
+        public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProductsAsync([FromQuery] ProductSpecParams productParams)
         {
-            var products = await _repository.GetEntitiesAsync(new ProductsWithTypesAndBrandsSpecification());
+            var productSpec = new ProductsWithTypesAndBrandsSpecification(productParams);
+            var countSpec = new ProductsWithFiltersForCountSpecification(productParams);
 
-            return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products));
+            var totalItems = await _repository.CountAsync(countSpec);
+            var products = await _repository.GetEntitiesAsync(productSpec);
+
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products);
+
+            return Ok(new Pagination<ProductToReturnDto>(productParams.PageIndex, productParams.PageSize, totalItems, data));
         }
 
         [HttpGet("{id}")]

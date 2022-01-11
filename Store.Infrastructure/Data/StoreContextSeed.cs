@@ -56,6 +56,8 @@ namespace Store.Infrastructure.Data
             {
                 var logger = loggerFactory.CreateLogger<StoreContextSeed>();
                 logger.LogError(exception.Message);
+
+                throw;
             }
         }
     }
