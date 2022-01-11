@@ -7,6 +7,7 @@ namespace Store.Core.Specifications
     {
         public ProductsWithTypesAndBrandsSpecification(ProductSpecParams productParams)
             : base(x =>
+                (string.IsNullOrWhiteSpace(productParams.Search) || x.Name.ToLower().Contains(productParams.Search)) &&
                 (!productParams.BrandId.HasValue || x.BrandId == productParams.BrandId) &&
                 (!productParams.TypeId.HasValue || x.TypeId == productParams.TypeId))
         {
@@ -14,7 +15,7 @@ namespace Store.Core.Specifications
             AddInclude(x => x.Brand);
             AddOrderBy(x => x.Name);
             ApplyPaging(
-                productParams.PageSize * (productParams.PageIndex - 1), 
+                productParams.PageSize * (productParams.PageIndex - 1),
                 productParams.PageSize);
 
             if (!string.IsNullOrEmpty(productParams.Sort))

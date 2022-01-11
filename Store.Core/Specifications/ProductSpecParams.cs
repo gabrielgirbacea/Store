@@ -6,8 +6,7 @@ namespace Store.Core.Specifications
     {
         private const int MaxPageSize = 50;
         private int _pageSize = 2;
-
-        public int PageIndex { get; set; } = 1;
+        private string _search;
 
         public int PageSize
         {
@@ -15,8 +14,17 @@ namespace Store.Core.Specifications
             set => _pageSize = (value > MaxPageSize) ? MaxPageSize : value;
         }
 
+        public string Search
+        {
+            get => _search;
+            set => _search = value.ToLower();
+        }
+        public int PageIndex { get; set; } = 1;
+
         public Guid? BrandId { get; set; }
+
         public Guid? TypeId { get; set; }
+
         public string Sort { get; set; }
     }
 }
