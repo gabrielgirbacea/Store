@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IPagination } from './models/pagination';
-import { IProduct } from './models/products';
+import { IPagination } from './shared/models/pagination';
+import { IProduct } from './shared/models/products';
 
 @Component({
   selector: 'app-root',
