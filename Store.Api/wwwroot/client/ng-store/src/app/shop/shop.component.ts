@@ -3,6 +3,7 @@ import { Guid } from 'guid-typescript';
 import { IProduct } from '../shared/models/product';
 import { IBrand } from '../shared/models/productBrand';
 import { IType } from '../shared/models/productType';
+import { ShopParams } from '../shared/models/shopParams';
 import { ShopService } from './shop.service';
 
 @Component({
@@ -14,9 +15,9 @@ export class ShopComponent implements OnInit {
   products: IProduct[] = [];
   brands: IBrand[] = [];
   types: IType[] = [];
-  selectedBrandId: Guid | undefined = undefined;
-  selectedTypeId: Guid | undefined = undefined;
-  selectedSort: string = 'name';
+  shopParams: ShopParams = new ShopParams();
+  totalCount: number = 0;
+
   sortOptions = [
     { name: 'Alphabetical', value: 'name' },
     { name: 'Price: Low to High', value: 'priceAsc' },
@@ -32,12 +33,15 @@ export class ShopComponent implements OnInit {
   }
 
   getProducts(): void {
-    this.shopService
-      .getProducts(this.selectedBrandId, this.selectedTypeId, this.selectedSort)
-      .subscribe(
-        (response) => (this.products = response.data),
-        (error) => console.log(error)
-      );
+    this.shopService.getProducts(this.shopParams).subscribe(
+      (response) => {
+        this.products = response.data;
+        this.shopParams.pageIndex = response.pageIndex;
+        this.shopParams.pageSize = response.pageSize;
+        this.totalCount = response.count;
+      },
+      (error) => console.log(error)
+    );
   }
 
   getBrands(): void {
@@ -59,17 +63,22 @@ export class ShopComponent implements OnInit {
   }
 
   onBrandSelected(brandId?: Guid) {
-    this.selectedBrandId = brandId;
+    this.shopParams.brandId = brandId;
     this.getProducts();
   }
 
   onTypeSelected(typeId?: Guid) {
-    this.selectedTypeId = typeId;
+    this.shopParams.typeId = typeId;
     this.getProducts();
   }
 
   onSortSelected(sort: string) {
-    this.selectedSort = sort;
+    this.shopParams.sort = sort;
+    this.getProducts();
+  }
+
+  onPageChanged(event: any) {
+    this.shopParams.pageIndex = event.page;
     this.getProducts();
   }
 }
