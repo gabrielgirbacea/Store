@@ -6,4 +6,5 @@ export class ShopParams {
   sort: string = 'name';
   pageIndex: number = 1;
   pageSize: number = 2;
+  search: string | undefined = undefined;
 }
