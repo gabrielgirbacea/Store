@@ -13,6 +13,8 @@ namespace Store.Api.Extensions
         {
             services.AddScoped(typeof(IBaseEntityRepository<>), (typeof(BaseEntityRepository<>)));
 
+            services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
+
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = actionContext =>
