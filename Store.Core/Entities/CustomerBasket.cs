@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Store.Core.Entities
 {
     public class CustomerBasket
     {
-        public CustomerBasket(string id)
+        public CustomerBasket(Guid id)
         {
             Id = id;
         }
@@ -14,7 +15,7 @@ namespace Store.Core.Entities
 
         }
 
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public List<BasketItem> Items { get; set; } = new List<BasketItem>();
     }

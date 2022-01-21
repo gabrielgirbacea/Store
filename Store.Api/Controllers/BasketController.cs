@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
+using System;
 using System.Threading.Tasks;
 
 namespace Store.Api.Controllers
@@ -15,7 +16,7 @@ namespace Store.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<CustomerBasket>> GetBasketById(string id)
+        public async Task<ActionResult<CustomerBasket>> GetBasketById(Guid id)
         {
             var basket = await _basketRepository.GetBasketAsync(id);
 
@@ -31,7 +32,7 @@ namespace Store.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task DeleteBasketAsync(string id)
+        public async Task DeleteBasketAsync(Guid id)
         {
             await _basketRepository.DeleteBasketAsync(id);
         }
