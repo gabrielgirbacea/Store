@@ -1,6 +1,4 @@
-import { Guid } from 'guid-typescript';
-
 export interface IType {
-  id: Guid | undefined;
+  id: string | undefined;
   name: string;
 }

@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Guid } from 'guid-typescript';
 import { IProduct } from '../shared/models/product';
 import { IBrand } from '../shared/models/productBrand';
 import { IType } from '../shared/models/productType';
@@ -63,13 +62,13 @@ export class ShopComponent implements OnInit {
     );
   }
 
-  onBrandSelected(brandId?: Guid) {
+  onBrandSelected(brandId?: string) {
     this.shopParams.brandId = brandId;
     this.shopParams.pageIndex = 1;
     this.getProducts();
   }
 
-  onTypeSelected(typeId?: Guid) {
+  onTypeSelected(typeId?: string) {
     this.shopParams.typeId = typeId;
     this.shopParams.pageIndex = 1;
     this.getProducts();
