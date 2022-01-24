@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container mt-2">
   <div *ngIf="basket$ | async as basket">
     <p *ngIf="basket === null">There are no items in your basket</p>
 
@@ -61,6 +61,7 @@
                         <i
                           class="fa fa-minus-circle text-warning mr-2"
                           style="cursor: pointer; font-size: 2em"
+                          (click)="decrementItemQuantity(item)"
                         ></i>
                         <span
                           class="font-weight-bold"
@@ -70,6 +71,7 @@
                         <i
                           class="fa fa-plus-circle text-warning mx-2"
                           style="cursor: pointer; font-size: 2em"
+                          (click)="incrementItemQuantity(item)"
                         ></i>
                       </div>
                     </td>
@@ -80,13 +82,28 @@
                     </td>
                     <td class="align-middle text-center">
                       <a class="text-danger">
-                        <i class="fa fa-trash" style="font-size: 2em"></i>
+                        <i
+                          class="fa fa-trash"
+                          style="cursor: pointer; font-size: 2em"
+                          (click)="removeBasketItem(item)"
+                        ></i>
                       </a>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 offset-6">
+            <app-order-totals></app-order-totals>
+            <a
+              routerLink="/checkout"
+              class="btn btn-outline-primary py-2 btn-block"
+            >
+              Proceed to checkout
+            </a>
           </div>
         </div>
       </div>
